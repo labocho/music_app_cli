@@ -197,6 +197,42 @@ module Musicapp
       out, _err, _status = osascript(script, metadata.to_json)
       out
     end
+
+    def play
+      script = <<~JS
+        function run(argv) {
+          var itunes = Application("Music");
+          itunes.play();
+        }
+      JS
+
+      out, _err, _status = osascript(script)
+      out
+    end
+
+    def pause
+      script = <<~JS
+        function run(argv) {
+          var itunes = Application("Music");
+          itunes.pause();
+        }
+      JS
+
+      out, _err, _status = osascript(script)
+      out
+    end
+
+    def next_track
+      script = <<~JS
+        function run(argv) {
+          var itunes = Application("Music");
+          itunes.nextTrack();
+        }
+      JS
+
+      out, _err, _status = osascript(script)
+      out
+    end
   end
 end
 # rubocop:enable Naming/AccessorMethodName

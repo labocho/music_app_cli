@@ -37,7 +37,23 @@ module Musicapp
       print "Rename?: "
       exit 1 unless $stdin.gets.chomp =~ /^y(es)?/i
 
-      puts Script.set_metadata(new_metadata)
+      Script.set_metadata(new_metadata)
+      puts "Complete!"
+    end
+
+    desc "play", "Play"
+    def play
+      Script.play
+    end
+
+    desc "pause", "Pause"
+    def pause
+      Script.pause
+    end
+
+    desc "next", "Advance to the next track"
+    def next
+      Script.next_track
     end
   end
 end
