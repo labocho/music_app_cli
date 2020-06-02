@@ -21,7 +21,7 @@ module Musicapp
 
     desc "set", "Set metadata"
     def set
-      puts Script.set_metadata(JSON.parse($stdin.read))
+      puts Script.set_metadata($stdin.read.each_line.map {|l| JSON.parse(l) })
     end
   end
 end

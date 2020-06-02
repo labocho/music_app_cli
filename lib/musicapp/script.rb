@@ -7,7 +7,7 @@ module Musicapp
   module Script
     ITEM_PROPERTIES = %w(
       name
-    )
+    ).map(&:freeze).freeze
     TRACK_PROPERTIES = %w(
       album
       albumArtist
@@ -79,12 +79,32 @@ module Musicapp
       volumeAdjustment
       work
       year
-    )
+    ).map(&:freeze).freeze
     FILE_TRACK_PROPERTIES = %w(
       location
-    )
-    FULL_PROPERTIES = ITEM_PROPERTIES + TRACK_PROPERTIES + FILE_TRACK_PROPERTIES
-    DEFAULT_PROPERTIES = %w(album albumArtist artist discCount discNumber name trackCount trackNumber location)
+    ).map(&:freeze).freeze
+    FULL_PROPERTIES = (ITEM_PROPERTIES + TRACK_PROPERTIES + FILE_TRACK_PROPERTIES).freeze
+    DEFAULT_PROPERTIES = %w(album albumArtist artist discCount discNumber name trackCount trackNumber location).map(&:freeze).freeze
+    READONLY_PROPERTIES = %w(
+      albumRatingKind
+      bitRate
+      cloudStatus
+      databaseID
+      dateAdded
+      downloaderAppleID
+      downloaderName
+      duration
+      kind
+      modificationDate
+      purchaserAppleID
+      purchaserName
+      ratingKind
+      releaseDate
+      sampleRate
+      size
+      time
+    ).map(&:freeze).freeze
+    WRITABLE_PROPERTIES = (FULL_PROPERTIES - READONLY_PROPERTIES).freeze
 
     module_function
 
@@ -108,6 +128,7 @@ module Musicapp
         unless invalid.empty?
           raise "Unknown properties: #{invalid.inspect}"
         end
+
         properties
       end
 
@@ -157,12 +178,21 @@ module Musicapp
             track = metadata[i]
             if (!track) continue;
 
-            if (track.track_number) selection[i].trackNumber = track.track_number;
-            if (track.name) selection[i].name = track.name;
-            if (track.comment) selection[i].comment = track.comment;
+            for (var j in track) {
+              var prop = track[j];
+              selection[i][j] = prop;
+            }
           }
         }
       JS
+
+      invalid = metadata.flat_map do |track|
+        track.keys - WRITABLE_PROPERTIES
+      end
+
+      unless invalid.empty?
+        raise "Unknown or readonly properties: #{invalid.inspect}"
+      end
 
       out, _err, _status = osascript(script, metadata.to_json)
       out
