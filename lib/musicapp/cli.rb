@@ -21,7 +21,23 @@ module Musicapp
 
     desc "set", "Set metadata"
     def set
-      puts Script.set_metadata($stdin.read.each_line.map {|l| JSON.parse(l) })
+      new_metadata = $stdin.read.each_line.map {|l| JSON.parse(l) }
+      properties = new_metadata.flat_map(&:keys).uniq.sort
+      current_metadata = Script.get_metadata(properties | %w(name))
+
+      current_metadata.zip(new_metadata).each do |(current_value, new_value)|
+        puts current_value["name"]
+        new_value.each do |k, v|
+          puts "  #{k}:"
+          puts "     #{current_value[k]}"
+          puts "  -> #{v}"
+        end
+      end
+
+      print "Rename?: "
+      exit 1 unless $stdin.gets.chomp =~ /^y(es)?/i
+
+      puts Script.set_metadata(new_metadata)
     end
   end
 end
