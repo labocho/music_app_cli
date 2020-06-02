@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in music_app_cli.gemspec
+# Specify your gem's dependencies in musicapp.gemspec
 gemspec
 
 gem "rake", "~> 12.0"

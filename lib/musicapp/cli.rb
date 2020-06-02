@@ -1,6 +1,6 @@
 require "thor"
 
-module MusicAppCli
+module Musicapp
   class Cli < Thor
     desc "get", "Get and print metadata"
     option :fields, aliases: :f, type: :string

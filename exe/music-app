@@ -1,3 +1,0 @@
-#!/usr/bin/env ruby
-require "music_app_cli"
-MusicAppCli::Cli.start(ARGV)

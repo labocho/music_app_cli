@@ -3,7 +3,7 @@ require "shellwords"
 require "open3"
 require "json"
 
-module MusicAppCli
+module Musicapp
   module Script
     ITEM_PROPERTIES = %w(
       name

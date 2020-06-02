@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "music_app_cli"
+require "musicapp"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
