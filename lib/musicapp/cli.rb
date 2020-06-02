@@ -3,9 +3,9 @@ require "thor"
 module Musicapp
   class Cli < Thor
     desc "get", "Get and print metadata"
-    option :fields, aliases: :f, type: :string
+    option :field, aliases: :f, type: :string
     def get
-      fields = case options[:fields]
+      fields = case options[:field]
       when "all"
         :all
       when nil

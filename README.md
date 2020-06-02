@@ -1,28 +1,43 @@
-# Musicapp
+# musicapp
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/musicapp`. To experiment with that code, run `bin/console` for an interactive prompt.
+`musicapp` is a command to control Apple's Music.app.
+Now, this supports following.
 
-TODO: Delete this and the text above, and describe your gem
+* Get metadata of selected tracks.
+* Set metadata of selected tracks.
+* Play, Pause, and skip to next track.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'musicapp'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
     $ gem install musicapp
+
+Or
+
+    $ git clone https://github.com/labocho/musicapp.git
+    $ cd musicapp
+    $ bundle install
+    $ bundle exec rake install
 
 ## Usage
 
-TODO: Write usage instructions here
+    # Show help
+    $ musicapp help
+
+    # Play, Pause, Skip to next track
+    $ musicapp play
+    $ musicapp stop
+    $ musicapp skip
+
+    # Get metadata of selected tracks
+    $ musicapp get --field name,trackNumber
+    {"name":"Hello, World!","trackNumber":12}
+    {"name":"foobar","trackNumber":13}
+
+    # Set metadata of selected tracks
+    $ cat <<EOS | musicapp set
+    {"name":"Hello, World!!!","trackNumber":11}
+    {"name":"foobar!!","trackNumber":12}
+    EOS
 
 ## Development
 
