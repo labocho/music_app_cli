@@ -1,4 +1,5 @@
 require "thor"
+require "pastel"
 
 module Musicapp
   class Cli < Thor
@@ -18,7 +19,7 @@ module Musicapp
         puts track.to_json
       end
     rescue ::Musicapp::Error => e
-      warn e.message
+      color_warn e.message
       exit 1
     end
 
@@ -43,10 +44,10 @@ module Musicapp
       Script.set_metadata(new_metadata)
       puts "Complete!"
     rescue ::Musicapp::Error => e
-      warn e.message
+      color_warn e.message
       exit 1
     rescue ::JSON::ParserError => e
-      warn e.message
+      color_warn e.message
       exit 2
     end
 
@@ -63,6 +64,13 @@ module Musicapp
     desc "next", "Advance to the next track"
     def next
       Script.next_track
+    end
+
+    private
+    def color_warn(message)
+      pastel = Pastel.new
+      message = pastel.red(message) if pastel.enabled?
+      warn message
     end
   end
 end
