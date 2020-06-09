@@ -11,12 +11,15 @@ module Musicapp
       when nil
         :default
       else
-        options[:fields].split(",")
+        options[:field].split(",")
       end
 
       Script.get_metadata(fields).each do |track|
         puts track.to_json
       end
+    rescue ::Musicapp::Error => e
+      warn e.message
+      exit 1
     end
 
     desc "set", "Set metadata"
@@ -34,11 +37,17 @@ module Musicapp
         end
       end
 
-      print "Rename?: "
+      print "Update?: "
       exit 1 unless $stdin.gets.chomp =~ /^y(es)?/i
 
       Script.set_metadata(new_metadata)
       puts "Complete!"
+    rescue ::Musicapp::Error => e
+      warn e.message
+      exit 1
+    rescue ::JSON::ParserError => e
+      warn e.message
+      exit 2
     end
 
     desc "play", "Play"

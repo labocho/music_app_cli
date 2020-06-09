@@ -5,6 +5,8 @@ require "json"
 
 module Musicapp
   module Script
+    class ScriptError < ::Musicapp::Error; end
+
     ITEM_PROPERTIES = %w(
       name
     ).map(&:freeze).freeze
@@ -111,7 +113,7 @@ module Musicapp
     def osascript(script, *args)
       out, err, status = Open3.capture3("osascript", "-l", "JavaScript", "-e", script, *args)
       unless status.success?
-        raise err
+        raise ScriptError, err
       end
 
       [out, err, status]
@@ -121,12 +123,12 @@ module Musicapp
       properties = case properties
       when :all
         FULL_PROPERTIES
-      when nil
+      when :default
         DEFAULT_PROPERTIES
       else
         invalid = properties - FULL_PROPERTIES
         unless invalid.empty?
-          raise "Unknown properties: #{invalid.inspect}"
+          raise ::Musicapp::Error, "Unknown properties: #{invalid.inspect}"
         end
 
         properties
@@ -191,7 +193,7 @@ module Musicapp
       end
 
       unless invalid.empty?
-        raise "Unknown or readonly properties: #{invalid.inspect}"
+        raise ::Musicapp::Error, "Unknown or readonly properties: #{invalid.inspect}"
       end
 
       out, _err, _status = osascript(script, metadata.to_json)
