@@ -3,8 +3,8 @@
 `musicapp` is a command to control Apple's Music.app.
 Now, this supports following.
 
-* Get metadata of selected tracks.
-* Set metadata of selected tracks.
+* Get metadata of selected tracks as JSON.
+* Set metadata of selected tracks by JSON.
 * Play, Pause, and skip to next track.
 
 ## Installation
@@ -38,6 +38,13 @@ Or
     {"name":"Hello, World!!!","trackNumber":11}
     {"name":"foobar!!","trackNumber":12}
     EOS
+
+    # List available metadata fields
+    $ musicapp fields
+    album
+    albumArtist
+    albumDisliked
+    ...
 
 ## Development
 

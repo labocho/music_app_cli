@@ -51,6 +51,13 @@ module Musicapp
       exit 2
     end
 
+    desc "fields", "List available fields"
+    def fields
+      Script::FULL_PROPERTIES.sort.each do |f|
+        puts f
+      end
+    end
+
     desc "play", "Play"
     def play
       Script.play
